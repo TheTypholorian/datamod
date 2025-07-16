@@ -17,11 +17,6 @@ public abstract class ItemMixin {
     private ComponentMap components;
 
     @Unique
-    public ComponentMap datamod$getComponents() {
-        return components;
-    }
-
-    @Unique
     public void datamod$setComponents(ComponentMap map) {
         components = map;
     }

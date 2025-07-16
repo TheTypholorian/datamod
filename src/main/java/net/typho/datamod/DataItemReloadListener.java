@@ -1,13 +1,9 @@
 package net.typho.datamod;
 
 import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.Resource;
@@ -20,7 +16,7 @@ import net.minecraft.util.profiler.Profiler;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -58,13 +54,7 @@ public class DataItemReloadListener implements IdentifiableResourceReloadListene
                 throw new RuntimeException(e);
             }
 
-            Item existing = Registries.ITEM.get(id);
-
-            if (existing == Items.AIR) {
-                Registry.register(Registries.ITEM, id, new Item(DynamicItem.readSettings(json.get("components"))));
-            } else {
-                DynamicItem.cast(existing).setComponents(ComponentMap.CODEC.parse(JsonOps.INSTANCE, json.get("components")).getOrThrow());
-            }
+            DynamicItem.load(id, json);
         }
     }
 
@@ -86,7 +76,6 @@ public class DataItemReloadListener implements IdentifiableResourceReloadListene
             }
 
             Block existing = Registries.BLOCK.get(id);
-            System.out.println(id + " " + existing);
 
             if (existing == Blocks.AIR) {
                 Registry.register(Registries.BLOCK, id, new Block(DynamicBlock.readSettings(json.get("settings"))));
