@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -92,11 +91,7 @@ public class DataItemReloadListener implements IdentifiableResourceReloadListene
                 id -> id.getPath().endsWith("dynamic_tag.json")
         );
 
-        System.out.println(resources);
-
         for (List<Resource> list : resources.values()) {
-            System.out.println(list);
-
             for (Resource resource : list) {
                 JsonObject json;
 
@@ -107,7 +102,6 @@ public class DataItemReloadListener implements IdentifiableResourceReloadListene
                 }
 
                 for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
-                    System.out.println(entry);
                     Registry<?> registry = Registries.REGISTRIES.get(Identifier.of(entry.getKey()));
 
                     if (registry == null) {
@@ -115,28 +109,15 @@ public class DataItemReloadListener implements IdentifiableResourceReloadListene
                     }
 
                     for (Map.Entry<String, JsonElement> entry1 : entry.getValue().getAsJsonObject().entrySet()) {
-                        System.out.println("\t" + entry1);
                         RegistryReferenceAccessor<?> accessor = (RegistryReferenceAccessor<?>) registry.getEntry(Identifier.of(entry1.getKey())).orElseThrow();
 
                         for (JsonElement tag : entry1.getValue().getAsJsonArray()) {
-                            System.out.println("\t\t" + tag);
                             putTag(accessor, TagKey.of(registry.getKey(), Identifier.of(tag.getAsString())));
                         }
                     }
                 }
             }
         }
-
-        Registries.BLOCK.forEach(block -> {
-            Identifier id = Registries.BLOCK.getId(block);
-
-            if (!Objects.equals(id.getNamespace(), "minecraft")) {
-                System.out.println(block);
-                System.out.println(((RegistryReferenceAccessor<?>) Registries.BLOCK.getEntry(id).orElseThrow()).getExtraTags());
-            }
-        });
-
-        System.out.println(Registries.BLOCK.get(Identifier.of("beryllium", "test_block_stairs")));
     }
 
     @Override

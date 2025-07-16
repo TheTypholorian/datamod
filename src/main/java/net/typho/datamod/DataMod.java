@@ -6,10 +6,7 @@ import com.mojang.serialization.JsonOps;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -72,15 +69,60 @@ public class DataMod implements ModInitializer {
     });
     public static final BlockConstructor STAIRS_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "stairs"), new BlockConstructor() {
         @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
         public Block createBlock(Identifier id, JsonObject json) {
-            return new StairsBlock(getBlockState(json.get("base_block_state")), BlockConstructor.extractSettings(json));
+            Block block = new StairsBlock(getBlockState(json.get("base_block_state")), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.STAIRS);
+            return block;
         }
 
         @Override
         public void modifyBlock(Block block, Identifier id, JsonObject json) {
-            System.out.println(block.getRegistryEntry().isIn(BlockTags.STAIRS));
             ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
             ((DynamicStairBlock) block).setBaseBlockState(getBlockState(json.get("base_block_state")));
+        }
+    });
+    public static final BlockConstructor SLAB_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "slab"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new SlabBlock(BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.SLABS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor WALL_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "wall"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new WallBlock(BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.WALLS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor DOOR_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "door"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new DoorBlock(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.WALLS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+            ((DynamicDoorBlock) block).setSettings(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow());
         }
     });
 
@@ -114,7 +156,6 @@ public class DataMod implements ModInitializer {
     public static void loadBlock(Identifier id, JsonObject json) {
         BlockConstructor constructor = json.has("constructor") ? BLOCK_CONSTRUCTORS.getOrEmpty(getIdentifier(json.get("constructor"))).orElse(DEFAULT_BLOCK_CONSTRUCTOR) : DEFAULT_BLOCK_CONSTRUCTOR;
         Block existing = Registries.BLOCK.get(id);
-        System.out.println(existing + " " + constructor + " " + json);
 
         if (existing == Blocks.AIR) {
             Registry.register(Registries.BLOCK, id, constructor.createBlock(id, json));
