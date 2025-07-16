@@ -2,7 +2,7 @@ package net.typho.datamod.mixin;
 
 import net.minecraft.component.ComponentMap;
 import net.minecraft.item.Item;
-import net.typho.datamod.DynamicItem;
+import net.typho.datamod.item.DynamicItem;
 import org.spongepowered.asm.mixin.*;
 
 @Mixin(Item.class)

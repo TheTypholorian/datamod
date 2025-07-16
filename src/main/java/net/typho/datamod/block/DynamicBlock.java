@@ -1,4 +1,4 @@
-package net.typho.datamod;
+package net.typho.datamod.block;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

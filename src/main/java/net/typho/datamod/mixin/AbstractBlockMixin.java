@@ -1,14 +1,10 @@
 package net.typho.datamod.mixin;
 
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.item.Item;
 import net.minecraft.loot.LootTable;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.sound.BlockSoundGroup;
-import net.typho.datamod.DynamicBlock;
-import net.typho.datamod.DynamicItem;
+import net.typho.datamod.block.DynamicBlock;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 

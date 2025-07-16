@@ -5,10 +5,14 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractBlockMixin",
+    "BlockItemMixin",
     "BlockSettingsAccessor",
     "DynamicRegistryManagerMixin",
     "ItemMixin",
-    "RegistriesMixin"
+    "RegistriesMixin",
+    "RegistryEntryReferenceMixin",
+    "SimpleRegistryMixin",
+    "StairsBlockMixin"
   ],
   "client": [
   ],
