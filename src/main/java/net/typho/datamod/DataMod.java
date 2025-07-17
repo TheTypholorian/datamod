@@ -115,14 +115,97 @@ public class DataMod implements ModInitializer {
         @SuppressWarnings({"unchecked", "deprecation"})
         public Block createBlock(Identifier id, JsonObject json) {
             Block block = new DoorBlock(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow(), BlockConstructor.extractSettings(json));
-            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.WALLS);
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.DOORS);
             return block;
         }
 
         @Override
         public void modifyBlock(Block block, Identifier id, JsonObject json) {
             ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
-            ((DynamicDoorBlock) block).setSettings(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow());
+        }
+    });
+    public static final BlockConstructor FENCE_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "fence"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new FenceBlock(BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.FENCES);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor FENCE_GATE_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "fence_gate"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new FenceGateBlock(WoodType.CODEC.parse(JsonOps.INSTANCE, json.get("wood_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.FENCE_GATES);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor SIGN_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "sign"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new SignBlock(WoodType.CODEC.parse(JsonOps.INSTANCE, json.get("wood_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.SIGNS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor PRESSURE_PLATE_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "pressure_plate"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new PressurePlateBlock(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.PRESSURE_PLATES);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor TRAPDOOR_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "trapdoor"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new TrapdoorBlock(BlockSetType.CODEC.parse(JsonOps.INSTANCE, json.get("block_set_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.TRAPDOORS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
+        }
+    });
+    public static final BlockConstructor WALL_SIGN_BLOCK_CONSTRUCTOR = Registry.register(BLOCK_CONSTRUCTORS, Identifier.of(MOD_ID, "wall_sign"), new BlockConstructor() {
+        @Override
+        @SuppressWarnings({"unchecked", "deprecation"})
+        public Block createBlock(Identifier id, JsonObject json) {
+            Block block = new WallSignBlock(WoodType.CODEC.parse(JsonOps.INSTANCE, json.get("wood_type")).getOrThrow(), BlockConstructor.extractSettings(json));
+            ((RegistryReferenceAccessor<Block>) block.getRegistryEntry()).getExtraTags().add(BlockTags.WALL_SIGNS);
+            return block;
+        }
+
+        @Override
+        public void modifyBlock(Block block, Identifier id, JsonObject json) {
+            ((DynamicBlock) block).setSettings(BlockConstructor.extractSettings(json));
         }
     });
 
